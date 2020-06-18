@@ -1,0 +1,14 @@
+# endereço do arquivo de log gerado pelo NIDS
+# obs: caso use o Snort, ele deverá ser executado com o paramêtro -A fast
+#   porque o mapeamento do log dependende deste formato
+PATH_ALERTS=/var/log/suricata/fast.log
+# your ip address
+IP=
+# token do seu bot no telegram
+TOKEN=
+# id do chat que o bot enviará as mensagens
+CHAT_ID=
+# configurações de instalação
+PATH_LOG=/var/log/SaT.log
+PATH_PIDFILE=/var/run/SaT.pid
+SEND_FILE=false
