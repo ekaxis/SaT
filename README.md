@@ -2,7 +2,7 @@
 
 **SaT** (Security Alert Tool) é uma ferramenta escrita em [Python](https://www.python.org/) para ajudar a manter a segurança de servidores, deixando você por dentro de ataque e scanners de hackers na rede com a ajuda da ferramenta [SURICATA](https://suricata-ids.org/) ou [SNORT](https://www.snort.org/) (funciona com ambos softwares), gerando notificações por meio de um bot no Telegram e armazenando logs mapeados para um banco de dados relacional, facilitando também possíveis analise de dados.
 
-Está versão da ferramenta funciona como agente, ela monitora os alertas gerados pelo Snort ou Suricata e em determinada condição avisa o administrador por meio do bot no Telegram. Além de salvar todos logs mapeados em um modelo relacional no banco de dados SQLite e enviar os alertas em determinados períodos de tempo definidos por você para a versão servidor do **SaT**.
+Está versão da ferramenta funciona como agente, ela monitora os alertas gerados pelo Snort ou Suricata e em determinada condição avisa o administrador por meio do bot no Telegram. Além de salvar todos logs mapeados em um modelo relacional no banco de dados SQLite e enviar os alertas em determinados períodos de tempo definidos por você para a extensão servidor do **SaT**.
 
 ### Detalhes técnicos
 
@@ -27,3 +27,5 @@ E por fim configurar copiar o arquivo SaT.conf.example para SaT.conf e preencher
 Para executar a ferramenta basta digitar o comando ``/path/SaT.py start`` 
 
 > OBS: Se você utiliza o snort deve está rodando como daemon com o parametro ``-A fast`` pois o mapeamento para objeto e banco de dados depênde desse formato de log. 
+
+![Exemplo de alerta](img/alerta.png)
