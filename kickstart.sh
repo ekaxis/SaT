@@ -19,23 +19,22 @@
 #
 
 # links externos
-REPOSITORY=""
+REPOSITORY="https://github.com/ekaxis/SaT.git"
 INSTALL_PATH="/etc/sat"
 # ------------------------------------------------------------------------------------------------
 # identify package manager
 package_manager=
 if [ ! -z $(command -v apt-get 2> /dev/null) ]; then
     package_manager="apt-get"
+    hidden_install="-qq"
 elif [ ! -z $(command -v dnf 2> /dev/null) ]; then
     package_manager="dnf"
+    hidden_install="-q"
 elif [ ! -z $(command -v yum 2> /dev/null) ]; then
-    package_manager="yum"
-elif [ ! -z $(command -v zypper 2> /dev/null) ]; then
-    package_manager="zypper"
+    hidden_install="-q"
 fi
-
 if [ -z $package_manager ]; then
-    fatal "system package manager not found"
+    fatal "unsupported distribution"
 fi
 # ------------------------------------------------------------------------------------------------
 # function for create temp directory for install depedencies
@@ -110,7 +109,7 @@ fatal() {
 # ------------------------------------------------------------------------------------------------
 # operação bem sucedida
 run_ok() {
-	printf >&2 "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} OK ${TPUT_RESET} \n\n"
+	printf >&2 " ${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} OK ${TPUT_RESET} \n\n"
 }
 ok_dependencie() {
     printf >&2 "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} OK ${TPUT_RESET} ${*}\n"
@@ -162,7 +161,7 @@ run() {
     printf >&2 "${TPUT_RESET}"
 
     "${@}"
-
+    
     local ret=$?
     if [ ${ret} -ne 0 ]; then
         run_failed
@@ -206,25 +205,26 @@ download() {
 # RUN pip3 --quiet install -r /var/www/warn/requirements.txt
 progress "check system dependencies"
 if [ -z $(command -v git --version 2> /dev/null) ]; then
-    warning "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} RUN ${TPUT_RESET} $package_manager install git -y -q"
+    warning "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} RUN ${TPUT_RESET} $package_manager install git -y $hidden_install"
 else
     ok_dependencie "$(git --version)"
 fi
 if [ -z $(command -v python3 -V 2> /dev/null) ]; then
-    warning "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} RUN ${TPUT_RESET} $package_manager install python3 -y -q"
+    warning "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} RUN ${TPUT_RESET} $package_manager install python3 -y $hidden_install"
 else
     ok_dependencie "$(python3 --version)"
 fi
 if [ -z $(command -v pip3 2> /dev/null) ]; then
-    warning "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} RUN ${TPUT_RESET} $package_manager install python3-pip -y -q"
+    warning "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} RUN ${TPUT_RESET} $package_manager install python3-pip -y $hidden_install"
 else
     ok_dependencie "$(pip3 --version)"
 fi
 if [ -z $(command -v suricata 2> /dev/null) ]; then
+    echo
 	echo " [?] for more details check the documentation for your platform: https://suricata.readthedocs.io/en/suricata-5.0.3/install.html"
     echo " [!] if your distribution is RHEL/CentOS install before ${TPUT_BOLD}${TPUT_WHITE}epel-release ${TPUT_RESET}"
     echo
-    warning "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} RUN ${TPUT_RESET} $package_manager install suricata -y -q"
+    warning "${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} RUN ${TPUT_RESET} $package_manager install suricata -y $hidden_install"
 else
     ok_dependencie "$(suricata -V)"
 fi
@@ -235,9 +235,9 @@ fi
 progress "clone repository SaT tool"
 run git clone $REPOSITORY || fatal "you have no communication with repo"
 progress "install SaT to system"
-cd "${TMPDIR}/sat" || exit 1
+cd "${TMPDIR}/SaT" || exit 1
 run pip3 --quiet install -r requirements.txt
 run cp alert.py bot.py config.py daemon.py model.py upload.py SaT.conf.example SaT.py $INSTALL_PATH
 echo "[+] configure \"${INSTALL_PATH}/SaT.conf\" to finish the installation"
 printf >&2 "\n\t${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} successful tool installation ${TPUT_RESET}\n\n"
-printf >&2 " [?] usage: ${INSTALL_PATH}/SaT.py start|status|stop|restart"
+printf >&2 " [?] usage: ${INSTALL_PATH}/SaT.py start|status|stop|restart\n\n"

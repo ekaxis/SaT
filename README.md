@@ -29,3 +29,4 @@ Para executar a ferramenta basta digitar o comando ``/path/SaT.py start``
 > OBS: Se você utiliza o snort deve está rodando como daemon com o parametro ``-A fast`` pois o mapeamento para objeto e banco de dados depênde desse formato de log. 
 
 ![Exemplo de alerta](img/alerta.png)
+![kickstart](img/kickstart.png)
