@@ -17,7 +17,6 @@ class Daemon:
         try: 
             pid = os.fork() 
             if pid > 0:
-                # exit first parent
                 sys.exit(0) 
         except OSError as err: 
             sys.stderr.write('fork #1 failed: {0}\n'.format(err))

@@ -2,11 +2,9 @@ import os, logging, sys
 from os.path import join, dirname
 from dotenv import load_dotenv
 from model import AlertModel
-from upload import sendfile
+## from upload import sendfile
 import peewee, telepot
 ## from apscheduler.schedulers.blocking import BlockingScheduler
-
-# import os >>> os.makedirs ('/ hey / oi / ola') 
 #
 # dependências do python - pip
 # dotenv-python==0.0.1
@@ -20,11 +18,10 @@ import peewee, telepot
 # configurações logging (DEBUG) 
 logging.getLogger('peewee').setLevel(logging.WARNING) # disable debug insert 
 logging.getLogger('telepot').setLevel(logging.WARNING)
-#
+# carregando variáveis de ambiente apartir de arquivo de configuração
 dotenv_path = join(dirname(__file__), 'sat.conf')
 if not os.path.isfile(dotenv_path):
     print(' - [!] configure file sat.conf'); sys.exit(0)
-# carregar variáveis de ambiente
 load_dotenv(dotenv_path=dotenv_path)
 # config logging
 PATH_LOG = os.environ.get('PATH_LOG')
@@ -44,7 +41,7 @@ APIKEY = os.environ.get('APIKEY')
 try:
     AlertModel.create_table()
 except Exception as e:
-    logging.error(' [err] %s' % e); sys.exit(0)
+    logging.error(' error config.py: %s' % e); sys.exit(0)
 # telegram config infos
 TOKEN = os.environ.get('TOKEN')
 CHAT_ID = os.environ.get('CHAT_ID')

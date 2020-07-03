@@ -10,6 +10,11 @@ from alert import Alert
 from daemon import Daemon
 
 
+def error_and_exit(msg):
+    logging.error(msg)
+    print(msg)
+    sys.exit(1)
+
 class SaT(Daemon):
 
     def __init__(self, pidfile, ip, path_file, token, chat_id,
@@ -62,28 +67,39 @@ class SaT(Daemon):
                         num_alerts = len(AlertModel.select().where(AlertModel.msg == alert.msg))
                         self.bot.sendMessage(alert.telegram_alert(self.host, num_alerts))
             except Exception as err:
-                logging.error(' - error in running function: %s' % err)
+                logging.error(' error in running function: %s' % err)
 
     def status(self):
         try:
-            with open(self.pidfile,'r') as pf: pid = int(pf.read().strip())
+            with open(self.pidfile, 'r') as pf: pid = int(pf.read().strip())
         except IOError: pid = None
     
-        if pid: print(' - running')
-        else: print(' - inactive')
+        if pid:
+            print(' - running')
+        else:
+            print(' - inactive')
 
 
 if __name__ == "__main__":
-    if not os.path.isfile(PATH_ALERTS): logging.error(' - path file alerts not found!'); sys.exit(0)
-    daemon = SaT(pidfile=PATH_PIDFILE, ip=IP, path_file=PATH_ALERTS, token=TOKEN, chat_id=CHAT_ID)
+    if not os.path.isfile(PATH_ALERTS):
+        error_and_exit('path file alerts not found')
+
+    sat = SaT(pidfile=PATH_PIDFILE, ip=IP, path_file=PATH_ALERTS, token=TOKEN, chat_id=CHAT_ID)
     
     if len(sys.argv) == 2:
-        if 'start' == sys.argv[1]: daemon.start()
-        elif 'stop' == sys.argv[1]: daemon.stop()
-        elif 'restart' == sys.argv[1]: daemon.restart()
-        elif 'status' == sys.argv[1]: daemon.status()
+        if 'start' == sys.argv[1]:
+            logging.info('starting [SaT tool]')
+            sat.start()
+        elif 'stop' == sys.argv[1]:
+            logging.info('stopping [SaT tool]')
+            sat.stop()
+        elif 'restart' == sys.argv[1]:
+            logging.info('restarting [SaT tool]')
+            sat.restart()
+        elif 'status' == sys.argv[1]:
+            sat.status()
         else:
-            print("Unknown command")
+            print("unknown command")
             sys.exit(2)
         sys.exit(0)
     else:
