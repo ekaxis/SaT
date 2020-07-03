@@ -238,6 +238,7 @@ progress "install SaT to system"
 cd "${TMPDIR}/SaT" || exit 1
 run pip3 --quiet install -r requirements.txt
 run cp alert.py bot.py config.py daemon.py model.py upload.py SaT.conf.example SaT.py $INSTALL_PATH
-echo "[+] configure \"${INSTALL_PATH}/SaT.conf\" to finish the installation"
+chmod 0744 $INSTALL_PATH/SaT.py
+echo "[+] configure \"${INSTALL_PATH}/sat.conf\" to finish the installation"
 printf >&2 "\n\t${TPUT_BGGREEN}${TPUT_WHITE}${TPUT_BOLD} successful tool installation ${TPUT_RESET}\n\n"
 printf >&2 " [?] usage: ${INSTALL_PATH}/SaT.py start|status|stop|restart\n\n"

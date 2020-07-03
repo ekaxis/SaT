@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from model import AlertModel
 from upload import sendfile
 import peewee, telepot
-from apscheduler.schedulers.blocking import BlockingScheduler
+## from apscheduler.schedulers.blocking import BlockingScheduler
 
 # import os >>> os.makedirs ('/ hey / oi / ola') 
 #
@@ -21,9 +21,9 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 logging.getLogger('peewee').setLevel(logging.WARNING) # disable debug insert 
 logging.getLogger('telepot').setLevel(logging.WARNING)
 #
-dotenv_path = join(dirname(__file__), 'SaT.conf')
+dotenv_path = join(dirname(__file__), 'sat.conf')
 if not os.path.isfile(dotenv_path):
-    print(' - [!] configure file SaT.conf'); sys.exit(0)
+    print(' - [!] configure file sat.conf'); sys.exit(0)
 # carregar variáveis de ambiente
 load_dotenv(dotenv_path=dotenv_path)
 # config logging
@@ -51,6 +51,6 @@ CHAT_ID = os.environ.get('CHAT_ID')
 # pidfile path
 PATH_PIDFILE = os.environ.get('PATH_PIDFILE')
 # agendar envio do arquivo do log
-if SEND_FILE:
-    scheduler = BlockingScheduler()
-    sched.start()
+## if SEND_FILE:
+##    scheduler = BlockingScheduler()
+##    sched.start()
