@@ -230,7 +230,7 @@ else
 fi
 
 if [ ! -d "$INSTALL_PATH" ]; then
-    run mkdir $INSTALL_PATH
+    run mkdir $INSTALL_PATH || exit 1
 fi
 progress "clone repository SaT tool"
 run git clone $REPOSITORY || fatal "you have no communication with repo"
