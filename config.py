@@ -21,7 +21,7 @@ logging.getLogger('telepot').setLevel(logging.WARNING)
 # carregando variáveis de ambiente apartir de arquivo de configuração
 dotenv_path = join(dirname(__file__), 'sat.conf')
 if not os.path.isfile(dotenv_path):
-    print(' - [!] configure file sat.conf'); sys.exit(0)
+    print(' [!] configure file sat.conf'); sys.exit(0)
 load_dotenv(dotenv_path=dotenv_path)
 # config logging
 PATH_LOG = os.environ.get('PATH_LOG')

@@ -1,6 +1,6 @@
 import peewee
 
-db = peewee.SqliteDatabase('SaT.db')
+db = peewee.SqliteDatabase('db.sqlite')
 
 """classe base para modelo da tabela de Alertas
 """
